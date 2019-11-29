@@ -1,3 +1,4 @@
+package sample_update;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,20 +17,22 @@ import org.xml.sax.SAXException;
 
 public class sample {
 
-	private static final String filepath = "/Users/xiaosizhe/Documents/workspace/excel/uploadDir/lotsofsample.xls";
 
 	public static void main(String[] args) throws SQLException, SAXException, IOException, ParserConfigurationException
 
 	{
-
-		int datasetid = 1991; // change dataset_id here
+		
+		Setting.Loadsetting();
+		String filepath= Setting.path;
+		String doi = Setting.doi; 
 		int species_id = 0;
 		database_v1 db = new database_v1();
+		int datasetid = db.getdataset_id(doi);
 		String sample_id = null;
 		String name = null;
 		int id = db.getid("sample");
-
-		// int id=36;
+		System.out.println(doi);
+		System.out.println(filepath);
 		File file = new File(filepath);
 		if (!file.isFile()) {
 			throw new RuntimeException(file + "xxx");
@@ -45,9 +48,7 @@ public class sample {
 			System.out.println(file);
 			e.printStackTrace();
 		}
-		int rownumber = 0;
-		ArrayList<String> items = new ArrayList<String>();
-
+	
 		ArrayList<Integer> attributes_id = new ArrayList<Integer>();
 
 		for (Row row : sheet) {

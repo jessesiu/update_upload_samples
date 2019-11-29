@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<setting>
+	<databaseUrl>jdbc:postgresql://localhost:5432/gigadb_v3/</databaseUrl>
+	<databaseUserName>gigadb_jesse</databaseUserName>
+	<databasePassword>gigadb2013</databasePassword>
+	<doi>100671</doi>
+	<path>./files/example.xls</path>
+</setting>
