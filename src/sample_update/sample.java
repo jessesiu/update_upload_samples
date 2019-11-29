@@ -30,7 +30,6 @@ public class sample {
 		int datasetid = db.getdataset_id(doi);
 		String sample_id = null;
 		String name = null;
-		int id = db.getid("sample");
 		System.out.println(doi);
 		System.out.println(filepath);
 		File file = new File(filepath);
@@ -48,7 +47,8 @@ public class sample {
 			System.out.println(file);
 			e.printStackTrace();
 		}
-	
+		db.delete_sample();
+		int id = db.getid("sample");
 		ArrayList<Integer> attributes_id = new ArrayList<Integer>();
 
 		for (Row row : sheet) {
@@ -118,7 +118,6 @@ public class sample {
 						name = cell.getStringCellValue();
 
 						System.out.println(name);
-						// attributes+="Common Name=\""+attribute1+"\", ";
 
 					}
 
@@ -153,6 +152,7 @@ public class sample {
 					}
 
 				}
+				
 				id++;
 
 			}
@@ -160,6 +160,7 @@ public class sample {
 			// db.updatesampleattribute(sample_id, attribute,doi);
 
 		}
+		db.updateids();
 		db.close();
 
 	}

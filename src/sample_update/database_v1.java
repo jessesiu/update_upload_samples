@@ -1,5 +1,14 @@
 package sample_update;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.poi.util.IOUtils;
 import org.xml.sax.SAXException;
 
 
@@ -16,6 +27,7 @@ public class database_v1 {
 	String url ;
 	String password ;
 	String user ;
+	String doi;
 	static Statement stmt;
 	Statement stmt1;
 	PreparedStatement prepforall = null;
@@ -28,6 +40,7 @@ public class database_v1 {
 			url = Setting.databaseUrl;
 			user = Setting.databaseUserName;
 			password = Setting.databasePassword;
+			doi = Setting.doi;
 			con = DriverManager.getConnection(url, user, password);
 			con.setAutoCommit(true);
 			stmt = con.createStatement();
@@ -50,6 +63,32 @@ public class database_v1 {
 		}
 
 	}
+	
+	public void delete_sample() throws FileNotFoundException, IOException, SQLException
+	{
+		
+		PreparedStatement prep1= null;
+		String query= "delete from sample_attribute where sample_id in (select sample_id from dataset_sample where dataset_id in (select id from dataset where identifier="+"'"+doi+"'"+"))";
+		System.out.println(query);
+		prep1= con.prepareStatement(query);
+		prep1.executeUpdate();
+		prep1.close();
+		query= "delete from sample where id in (select sample_id from dataset_sample where dataset_id in (select id from dataset where identifier ="+"'"+doi+"'"+"))";
+		System.out.println(query);
+		prep1= con.prepareStatement(query);
+		prep1.executeUpdate();
+		prep1.close();
+		
+	}
+	
+	public void updateids() throws FileNotFoundException, IOException, SQLException
+	{
+
+		ScriptRunner sr = new ScriptRunner(con,false,false);
+		sr.runScript(new BufferedReader(new FileReader("./files/updateid.sql")));
+	}
+	
+	
 
 	public int getid(String table) throws SQLException {
 		int newid = 0;
