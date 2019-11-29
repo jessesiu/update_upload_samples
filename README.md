@@ -1,4 +1,5 @@
 # Update and Upload Sample in GigaDB
+Unfinished ...
 
 ## Step1
 Run the SQL query file to delete sample and sample_attributes associated with the dataset. N.B. Replace the DOI number in '100XXX'
